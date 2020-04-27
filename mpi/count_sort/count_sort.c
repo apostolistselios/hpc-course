@@ -66,8 +66,10 @@ int main(int argc, char *argv[]) {
  * ---------------------
  * Implements the Count Sort Algorithm, sorts the array passed as an argument.
  * 
- * int size: the size of the array.
+ * int rank: the rank  of the process that calls the function.
+ * int np: the number of processes.
  * int array[]: the array to be sorted.
+ * int size: the size of the array.
  */
 void count_sort(int rank, int np, int array[], int size) {
     int i, j, count;
@@ -110,9 +112,8 @@ void check_args(int argc, char *argv[]) {
  * ---------------------------------
  * generates an array with random numbers between 0 and RAND_MAX.
  * 
- * int size: the size of the array.
- * int thread_count: the number of threads to be created.
  * int array[]: the array in which the random numbers will be stored.
+ * int size: the size of the array.
  */
 void generate_random_array(int array[], int size) {
     int i;
@@ -126,8 +127,9 @@ void generate_random_array(int array[], int size) {
  * ----------------------
  * Prints an array.
  * 
- * int size: the size of the array.
+ * int rank: the rank of the process that calls the function.
  * int array[]: the array to be printed.
+ * int size: the size of the array.
  */
 void print_array(int rank, int array[], int size) {
     // printf("My rank = %d, size = %d\n", rank, size);
