@@ -5,7 +5,6 @@
  * Apostolos Tselios, April 2020
  */
 
-#include <omp.h>
 #include <time.h>
 #include <stdio.h>
 #include <stdlib.h>
@@ -23,6 +22,8 @@ void print_array(int rank, int array[], int size);
 
 int main(int argc, char *argv[]) {
 
+    double start_time, end_time;
+
     int rank, np; // np = number of processes
     MPI_Init(&argc, &argv);
     MPI_Comm_size(MPI_COMM_WORLD, &np);
@@ -33,8 +34,8 @@ int main(int argc, char *argv[]) {
     }
     
     int size = strtol(argv[1], NULL, 10);
-    int* array = malloc(size * sizeof(int));
-    int* sorted = malloc(size * sizeof(int));
+    int* array = (int*) malloc(size * sizeof(int));
+    int* sorted = (int*) malloc(size * sizeof(int));
 
     if (rank == MASTER) {
         srand(time(0));
@@ -43,6 +44,8 @@ int main(int argc, char *argv[]) {
         printf("Array = ");
         print_array(rank, array, size);
         printf("Sorting...\n");
+
+        start_time = MPI_Wtime();
     }
     
     MPI_Bcast(array, size, MPI_INT, MASTER, MPI_COMM_WORLD);
@@ -55,8 +58,14 @@ int main(int argc, char *argv[]) {
     if (rank == MASTER) {
         printf("Sorted = ");
         print_array(rank, sorted, size);
+
+        end_time = MPI_Wtime();
+        printf("Took: %f\n", end_time - start_time);
     }
     
+    free(array);
+    free(sorted);
+
     MPI_Finalize();
     return 0;
 }
@@ -75,7 +84,7 @@ void count_sort(int rank, int np, int array[], int size) {
     int i, j, count;
     int start = (rank * size) / np;
     int end = ((rank + 1) * size) / np;
-    int* temp = calloc(size, sizeof(int));
+    int* temp = (int*) calloc(size, sizeof(int));
 
     for (i = start; i < end; i++) {
         count = 0;

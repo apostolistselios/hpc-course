@@ -26,8 +26,8 @@ int main(int argc, char *argv[]) {
 
     int thread_count = strtol(argv[1], NULL, 10);
     int size = strtol(argv[2], NULL, 10);
-    int* array = malloc(size * sizeof(int));
-    int* sorted_arr = malloc(size * sizeof(int));
+    int* array = (int*) malloc(size * sizeof(int));
+    int* sorted_arr = (int*) malloc(size * sizeof(int));
     if (array == NULL || sorted_arr == NULL) {
         printf("Memory error: allocating memor for array or sorted_arr\n");
         return 2;
@@ -43,8 +43,10 @@ int main(int argc, char *argv[]) {
     printf("Sorted...\n");
     start = omp_get_wtime();
     // print_array(size, sorted_arr);
-
     printf("Time used: %f\n", (end - start));
+    
+    free(array);
+    free(sorted_arr);
 
     return 0;
 }
