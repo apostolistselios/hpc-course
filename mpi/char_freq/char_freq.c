@@ -1,3 +1,10 @@
+/**
+ * A program that counts the character frequency in a file 
+ * in parallel using MPI.
+ * 
+ * Apostolos Tselios, April 2020
+ */
+
 #include <stdio.h> 
 #include <stdlib.h> 
 
